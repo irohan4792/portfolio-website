@@ -147,3 +147,22 @@
 
 
 }());
+
+var mouse = document.querySelector("#mouse")
+var page = document.querySelector("#page")
+page.addEventListener("mousemove", function(dets){
+	gsap.to(mouse,{
+		x:dets.x,
+		y:dets.y
+	} )
+})
+page.addEventListener("mouseenter", function(dets){
+	gsap.to(mouse,{
+		scale:1
+	} )
+})
+page.addEventListener("mouseleave", function(dets){
+	gsap.to(mouse,{
+		scale:0
+	} )
+})
