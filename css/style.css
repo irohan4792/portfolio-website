@@ -20,6 +20,17 @@ body {
   background: #fff;
 }
 
+.top-photo{
+  height: 600px;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+}
+
+@media screen and (max-width: 768px) {
+  .top-photo { height: 320px;}
+}
+
 #page {
   position: relative;
   overflow-x: hidden;
@@ -113,7 +124,8 @@ figure {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 144, 0, 0.9);
+  /* reduce opacity so background image is visible */
+  background: rgba(255, 145, 0, 0.121);
 }
 
 #fh5co-header .display-t,
@@ -127,6 +139,19 @@ figure {
   display: table-cell;
   vertical-align: middle;
   height: 600px;
+}
+
+/* Move header text slightly down from top */
+#fh5co-header .display-tc,
+.fh5co-cover .display-tc {
+  padding-top: 300px;
+}
+
+@media screen and (max-width: 768px) {
+  #fh5co-header .display-tc,
+  .fh5co-cover .display-tc {
+    padding-top: 40px;
+  }
 }
 
 #fh5co-header .display-tc h1,
@@ -154,14 +179,37 @@ figure {
   transform: rotate(-5deg);
 }
 
+/* spacing between first and last name */
+#fh5co-header .display-tc h1 .first-name {
+  display: inline-block;
+  margin-right: px;
+}
+
+@media screen and (max-width: 768px) {
+  #fh5co-header .display-tc h1 .first-name {
+    margin-right: 12px;
+  }
+}
+
 #fh5co-header .display-tc h1 span,
 .fh5co-cover .display-tc h1 span {
   padding: 4px 15px;
   position: relative;
 }
 
+
+/* Only show the decorative lines on the outside of the full name
+   (when name is split into two spans). Disable generic span pseudo
+   elements and apply them to the outer spans instead. */
 #fh5co-header .display-tc h1 span:before,
-.fh5co-cover .display-tc h1 span:before {
+.fh5co-cover .display-tc h1 span:before,
+#fh5co-header .display-tc h1 span:after,
+.fh5co-cover .display-tc h1 span:after {
+  display: none;
+}
+
+#fh5co-header .display-tc h1 .first-name:before,
+.fh5co-cover .display-tc h1 .first-name:before {
   position: absolute;
   top: 40px;
   left: 0;
@@ -170,10 +218,11 @@ figure {
   content: '';
   background: #fff;
   margin-left: -30px;
+  display: block;
 }
 
-#fh5co-header .display-tc h1 span:after,
-.fh5co-cover .display-tc h1 span:after {
+#fh5co-header .display-tc h1 .last-name:after,
+.fh5co-cover .display-tc h1 .last-name:after {
   position: absolute;
   top: 40px;
   right: 0;
@@ -182,6 +231,7 @@ figure {
   content: '';
   background: #fff;
   margin-right: -30px;
+  display: block;
 }
 
 @media screen and (max-width: 768px) {
@@ -191,16 +241,16 @@ figure {
     font-size: 34px;
   }
 
-  #fh5co-header .display-tc h1 span:before,
-  .fh5co-cover .display-tc h1 span:before {
+  #fh5co-header .display-tc h1 .first-name:before,
+  .fh5co-cover .display-tc h1 .first-name:before {
     top: 28px;
     width: 20px;
     height: 3px;
     margin-left: -15px;
   }
 
-  #fh5co-header .display-tc h1 span:after,
-  .fh5co-cover .display-tc h1 span:after {
+  #fh5co-header .display-tc h1 .last-name:after,
+  .fh5co-cover .display-tc h1 .last-name:after {
     top: 28px;
     width: 20px;
     height: 3px;
@@ -498,7 +548,7 @@ figure {
 }
 
 .fh5co-heading.fh5co-heading-sm {
-  margin-bottom: 2em;
+  margin-bottom: 1.5em;
 }
 
 .fh5co-heading h2 {
@@ -1096,8 +1146,8 @@ figure {
 #fh5co-consult .video {
   display: table;
   width: 50%;
-  background-size: cover;
-  background-position: center center;
+  background-size: cover !important;
+  background-position: left center !important;
   background-repeat: no-repeat;
   position: relative;
   display: -webkit-box;
