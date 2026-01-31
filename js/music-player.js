@@ -1,58 +1,24 @@
 /* ======================================================
-   MUSIC PLAYER - MODULAR FUNCTIONALITY
-   ======================================================== */
+   MUSIC PLAYER - FINAL SMART COLLAPSE VERSION
+   ====================================================== */
 
-// Playlist - Add your piano songs here
+// ---------------- PLAYLIST ----------------
 const playlist = [
-	{
-		id: 1,
-		title: "Closer",
-		artist: "Rohan Sharma",
-		src: "music/closer.wav"
-	},
-	{
-		id: 2,
-		title: "Golden Hour",
-		artist: "Rohan Sharma",
-		src: "music/golden_hour.wav"
-	},
-	{
-		id: 3,
-		title: "Kaise hua",
-		artist: "Rohan Sharma",
-		src: "music/kaise_hua.wav"
-	},
-	{
-		id: 4,
-		title: "Kho Gaye",
-		artist: "Rohan Sharma",
-		src: "music/kho_gaye.wav"
-	},
-    {
-		id: 5,
-		title: "Ranjha",
-		artist: "Rohan Sharma",
-		src: "music/ranjha.wav"
-	},
-	{
-		id: 6,
-		title: "Saiyaara",
-		artist: "Rohan Sharma",
-		src: "music/saiyara.wav"
-	},
-    {
-		id: 7,
-		title: "Wildest Dreams",
-		artist: "Rohan Sharma",
-		src: "music/wildest_dreams.wav"
-	}
+	{ id: 1, title: "Closer", artist: "Rohan Sharma", src: "music/closer.wav" },
+	{ id: 2, title: "Golden Hour", artist: "Rohan Sharma", src: "music/golden_hour.wav" },
+	{ id: 3, title: "Kaise hua", artist: "Rohan Sharma", src: "music/kaise_hua.wav" },
+	{ id: 4, title: "Kho Gaye", artist: "Rohan Sharma", src: "music/kho_gaye.wav" },
+	{ id: 5, title: "Ranjha", artist: "Rohan Sharma", src: "music/ranjha.wav" },
+	{ id: 6, title: "Saiyaara", artist: "Rohan Sharma", src: "music/saiyara.wav" },
+	{ id: 7, title: "Wildest Dreams", artist: "Rohan Sharma", src: "music/wildest_dreams.wav" }
 ];
 
-// Music Player Variables
+// ---------------- STATE ----------------
 let currentSongIndex = 0;
 let isPlaying = false;
+let wasPlaylistOpen = false;
 
-// Get DOM Elements
+// ---------------- DOM ----------------
 const audio = document.getElementById('audio-player');
 const playBtn = document.getElementById('play-btn');
 const prevBtn = document.getElementById('prev-btn');
@@ -70,158 +36,165 @@ const playlistEl = document.getElementById('playlist');
 const musicPlayer = document.getElementById('music-player');
 const playlistContainer = document.getElementById('playlist-container');
 
-// Initialize Player
+// ---------------- PLAYER STATE HELPERS ----------------
+function expandPlayer() {
+	musicPlayer.classList.remove('collapsed');
+	if (wasPlaylistOpen) {
+		playlistContainer.style.display = 'block';
+	}
+}
+
+function collapsePlayerFully() {
+	wasPlaylistOpen = playlistContainer.style.display === 'block';
+	musicPlayer.classList.add('collapsed');
+	playlistContainer.style.display = 'none';
+}
+
+// ---------------- CORE ----------------
 function initPlayer() {
 	loadSong(currentSongIndex);
 	renderPlaylist();
 	audio.volume = volumeRange.value / 100;
 }
 
-// Load Song
 function loadSong(index) {
-	if (playlist[index]) {
-		const song = playlist[index];
-		audio.src = song.src;
-		songTitle.textContent = song.title;
-		songArtist.textContent = song.artist;
-		updatePlaylistHighlight();
-	}
+	const song = playlist[index];
+	if (!song) return;
+
+	audio.src = song.src;
+	songTitle.textContent = song.title;
+	songArtist.textContent = song.artist;
+	updatePlaylistHighlight();
 }
 
-// Render Playlist
-function renderPlaylist() {
-	playlistEl.innerHTML = '';
-    playlist.sort((a, b) => 
-		a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
-	);
-	playlist.forEach((song, index) => {
-		const li = document.createElement('li');
-		li.textContent = song.title + ' - ' + song.artist;
-		li.className = 'playlist-item';
-		if (index === currentSongIndex) {
-			li.classList.add('active');
-		}
-		li.addEventListener('click', () => {
-			currentSongIndex = index;
-			loadSong(currentSongIndex);
-			playSong();
-		});
-		playlistEl.appendChild(li);
-	});
-}
-
-// Update Playlist Highlight
-function updatePlaylistHighlight() {
-	const items = playlistEl.querySelectorAll('.playlist-item');
-	items.forEach((item, index) => {
-		item.classList.toggle('active', index === currentSongIndex);
-	});
-}
-
-// Play Song
 function playSong() {
 	isPlaying = true;
 	audio.play();
 	playBtn.innerHTML = '<i class="icon-pause2"></i>';
+	expandPlayer();
 }
 
-// Pause Song
 function pauseSong() {
 	isPlaying = false;
 	audio.pause();
 	playBtn.innerHTML = '<i class="icon-play3"></i>';
 }
 
-// Play/Pause Toggle
-playBtn.addEventListener('click', () => {
-	if (isPlaying) {
-		pauseSong();
-	} else {
-		playSong();
-	}
+// ---------------- PLAYLIST ----------------
+function renderPlaylist() {
+	playlistEl.innerHTML = '';
+
+	playlist.sort((a, b) =>
+		a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
+	);
+
+	playlist.forEach((song, index) => {
+		const li = document.createElement('li');
+		li.textContent = `${song.title} - ${song.artist}`;
+		li.className = 'playlist-item';
+
+		if (index === currentSongIndex) li.classList.add('active');
+
+		li.addEventListener('click', e => {
+			e.stopPropagation();
+			currentSongIndex = index;
+			loadSong(index);
+			playSong();
+		});
+
+		playlistEl.appendChild(li);
+	});
+}
+
+function updatePlaylistHighlight() {
+	document.querySelectorAll('.playlist-item').forEach((item, index) => {
+		item.classList.toggle('active', index === currentSongIndex);
+	});
+}
+
+// ---------------- CONTROLS ----------------
+playBtn.addEventListener('click', e => {
+	e.stopPropagation();
+	isPlaying ? pauseSong() : playSong();
 });
 
-// Next Song
-nextBtn.addEventListener('click', () => {
+nextBtn.addEventListener('click', e => {
+	e.stopPropagation();
 	currentSongIndex = (currentSongIndex + 1) % playlist.length;
 	loadSong(currentSongIndex);
 	playSong();
 });
 
-// Previous Song
-prevBtn.addEventListener('click', () => {
+prevBtn.addEventListener('click', e => {
+	e.stopPropagation();
 	currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
 	loadSong(currentSongIndex);
 	playSong();
 });
 
-// Update Progress Bar
+// ---------------- PROGRESS ----------------
 audio.addEventListener('timeupdate', () => {
-	const { currentTime, duration } = audio;
-	const progressPercent = (currentTime / duration) * 100;
-	progress.style.width = progressPercent + '%';
-	progressRange.value = progressPercent;
-	
-	currentTimeEl.textContent = formatTime(currentTime);
-	durationTimeEl.textContent = formatTime(duration);
+	const percent = (audio.currentTime / audio.duration) * 100 || 0;
+	progress.style.width = percent + '%';
+	progressRange.value = percent;
+
+	currentTimeEl.textContent = formatTime(audio.currentTime);
+	durationTimeEl.textContent = formatTime(audio.duration);
 });
 
-// Set Progress
-progressRange.addEventListener('input', (e) => {
-	const newTime = (e.target.value / 100) * audio.duration;
-	audio.currentTime = newTime;
+progressRange.addEventListener('input', e => {
+	audio.currentTime = (e.target.value / 100) * audio.duration;
 });
 
-// Volume Control
-volumeRange.addEventListener('input', (e) => {
+// ---------------- VOLUME ----------------
+volumeRange.addEventListener('input', e => {
 	audio.volume = e.target.value / 100;
 });
 
-// Auto Play Next Song
+// ---------------- AUTOPLAY ----------------
 audio.addEventListener('ended', () => {
 	currentSongIndex = (currentSongIndex + 1) % playlist.length;
 	loadSong(currentSongIndex);
 	playSong();
 });
 
-// Toggle Playlist Visibility
-togglePlaylistBtn.addEventListener('click', () => {
-	playlistContainer.style.display = 
-		playlistContainer.style.display === 'none' ? 'block' : 'none';
-    playlistContainer.style.display=playlistContainer.style.display==='block'?'block':'none';
-});
+// ---------------- UI EVENTS ----------------
+musicPlayer.addEventListener('click', e => e.stopPropagation());
+playlistContainer.addEventListener('click', e => e.stopPropagation());
 
-// Toggle Player Minimize
-playerToggleBtn.addEventListener('click', () => {
-	musicPlayer.classList.toggle('collapsed');
-	// Remove animation once user interacts for the first time
+playerToggleBtn.addEventListener('click', e => {
+	e.stopPropagation();
 	playerToggleBtn.classList.remove('first-time-animation');
-});
 
-// Close Player When Clicking Outside
-document.addEventListener('click', (e) => {
-	// Check if click is outside the music player, toggle button, and playlist
-	if (!musicPlayer.contains(e.target) && !playerToggleBtn.contains(e.target) && !playlistContainer.contains(e.target)) {
-		// If player is expanded, collapse it
-		if (!musicPlayer.classList.contains('collapsed')) {
-			musicPlayer.classList.add('collapsed');
-		}
+	if (musicPlayer.classList.contains('collapsed')) {
+		expandPlayer();
+	} else {
+		collapsePlayerFully();
 	}
 });
 
-// Format Time Function
+togglePlaylistBtn.addEventListener('click', e => {
+	e.stopPropagation();
+	expandPlayer();
+
+	const isOpen = playlistContainer.style.display === 'block';
+	playlistContainer.style.display = isOpen ? 'none' : 'block';
+	wasPlaylistOpen = !isOpen;
+});
+
+document.addEventListener('click', collapsePlayerFully);
+
+// ---------------- UTILS ----------------
 function formatTime(seconds) {
-	if (isNaN(seconds)) return '0:00';
-	const minutes = Math.floor(seconds / 60);
-	const secs = Math.floor(seconds % 60);
-	return minutes + ':' + (secs < 10 ? '0' : '') + secs;
+	if (!seconds || isNaN(seconds)) return '0:00';
+	const m = Math.floor(seconds / 60);
+	const s = Math.floor(seconds % 60);
+	return `${m}:${s < 10 ? '0' : ''}${s}`;
 }
 
-// Initialize Player on Page Load
+// ---------------- INIT ----------------
 document.addEventListener('DOMContentLoaded', () => {
 	initPlayer();
-	// Start with player collapsed
 	musicPlayer.classList.add('collapsed');
-	// Add first-time animation class to toggle button
 	playerToggleBtn.classList.add('first-time-animation');
 });
