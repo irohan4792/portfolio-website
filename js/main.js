@@ -148,21 +148,33 @@
 
 }());
 
-var mouse = document.querySelector("#mouse")
-var page = document.querySelector("#page")
-page.addEventListener("mousemove", function(dets){
-	gsap.to(mouse,{
-		x:dets.x,
-		y:dets.y
-	} )
-})
-page.addEventListener("mouseenter", function(dets){
-	gsap.to(mouse,{
-		scale:1
-	} )
-})
-page.addEventListener("mouseleave", function(dets){
-	gsap.to(mouse,{
-		scale:0
-	} )
-})
+var mouse = document.querySelector("#mouse");
+// Use window-level events so the cursor follows across the whole viewport
+// and doesn't get stuck when leaving the #page element. Disable on touch devices.
+if (mouse) {
+	var isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+	if (!isTouch) {
+		// start hidden off-screen and center the element using xPercent/yPercent
+		gsap.set(mouse, { x: -100, y: -100, scale: 0, xPercent: -50, yPercent: -50 });
+
+		var cursorVisible = false;
+		window.addEventListener('mousemove', function(e) {
+			// Reveal cursor on first movement (some browsers don't fire window.mouseenter)
+			if (!cursorVisible) {
+				gsap.to(mouse, { scale: 1, duration: 0.18 });
+				cursorVisible = true;
+			}
+			// use clientX/clientY so fixed-positioned element moves with viewport
+			gsap.to(mouse, { x: e.clientX, y: e.clientY, duration: 0.12, ease: 'power2.out' });
+		});
+
+		// hide when leaving viewport (prevents cursor from getting 'stuck')
+		window.addEventListener('mouseleave', function() {
+			gsap.to(mouse, { scale: 0, duration: 0.18 });
+			cursorVisible = false;
+		});
+	} else {
+		// hide custom cursor on touch devices
+		mouse.style.display = 'none';
+	}
+}

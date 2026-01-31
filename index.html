@@ -35,6 +35,8 @@
 	
 	<!-- Theme style  -->
 	<link rel="stylesheet" href="css/style.css">
+	<!-- Music Player Styles (Optional - Comment out to disable) -->
+	<link rel="stylesheet" href="css/music-player.css">
 	
 	<!-- Modernizr JS -->
 	<script src="js/modernizr-2.6.2.min.js"></script>
@@ -48,7 +50,7 @@
 	
 	<body>
 
-		<div id="mouse"></div>
+		<!-- <div id="mouse"></div> -->
 		<div class="fh5co-loader"></div>
 		
 	<div id="page">
@@ -377,7 +379,7 @@
 					<div class="progress-wrap">
 						<h3><span class="name-left">Video Editing</span><span class="value-right">90%</span></h3>
 						<div class="progress">
-							<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="90"
+						<div class="progress-bar progress-bar-2 progress-bar-striped active" role="progressbar" aria-valuenow="90"
 								aria-valuemin="0" aria-valuemax="100" style="width:90%">
 							</div>
 						</div>
@@ -582,11 +584,11 @@
 						<div class="blog-text">
 							<span class="posted_on">July 19th 2021</span>
 							<h3><a href="#">Kaise Hua Piano Cover</a></h3>
-							<p>This is a piano cover of the song kaise hua from the movie kabir singh.</p>
+							<p>Piano cover of the song kaise hua from the movie Kabir Singh.</p>
 							<ul class="stuff">
 								<!-- <li><i class="icon-heart2"></i>249</li>
 									<li><i class="icon-eye2"></i>308</li> -->
-								<li><a href="https://www.youtube.com/watch?v=wc_h4mxoNdo">Read More<i
+								<li><a href="https://www.youtube.com/watch?v=wc_h4mxoNdo">Visit<i
 											class="icon-arrow-right22"></i></a></li>
 							</ul>
 						</div>
@@ -598,11 +600,11 @@
 						<div class="blog-text">
 							<span class="posted_on">Mar. 16th 2022</span>
 							<h3><a href="#">Tum Hi Ho Tutorial</a></h3>
-							<p>This is a piano tutorial of the song tum hi ho from the movies aashiqui 2.</p>
+							<p>Piano tutorial of the song tum hi ho from the movie aashiqui 2.</p>
 							<ul class="stuff">
 								<!-- <li><i class="icon-heart2"></i>249</li>
 									<li><i class="icon-eye2"></i>308</li> -->
-								<li><a href="https://www.youtube.com/watch?v=fF-7KSvDsb4">Read More<i
+								<li><a href="https://www.youtube.com/watch?v=fF-7KSvDsb4">Visit<i
 											class="icon-arrow-right22"></i></a></li>
 							</ul>
 						</div>
@@ -615,12 +617,11 @@
 							<span class="posted_on">Sep. 19th 2021</span>
 							<h3><a href="https://www.youtube.com/watch?v=VLnVy3Zjyek">Arcade x Mann Mera</a>
 							</h3>
-							<p>This is a piano cover of the song arcade x mann mera composed by gravero. The achievement
-								is that he also commented on this song which was a dream come true for me.</p>
+							<p>Piano cover of the song Arcade x mann mera composed by gravero. Comment from gravero was a dream come true for me!!</p>
 							<ul class="stuff">
 								<!-- <li><i class="icon-heart2"></i>249</li>
 									<li><i class="icon-eye2"></i>308</li> -->
-								<li><a href="#">Read More<i class="icon-arrow-right22"></i></a></li>
+								<li><a href="#">Visit<i class="icon-arrow-right22"></i></a></li>
 							</ul>
 						</div>
 					</div>
@@ -729,6 +730,66 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/gsap.min.js" integrity="sha512-7Au1ULjlT8PP1Ygs6mDZh9NuQD0A5prSrAUiPHMXpU6g3UMd8qesVnhug5X4RoDr35x5upNpx0A6Sisz1LSTXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/ScrollTrigger.min.js" integrity="sha512-LQQDtPAueBcmGXKdOBcMkrhrtqM7xR2bVrnMtYZ8ImAZhFlIb5xrMqQ6uZviyeSB+4mYj89ta8niiCIQM1Gj0w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	
+	<!-- Music Player -->
+	<div id="music-player" class="music-player">
+		<div class="player-container">
+			<!-- Song Info -->
+			<div class="player-info">
+				<div class="song-title" id="song-title">Piano Melody</div>
+				<div class="song-artist" id="song-artist">Select a song</div>
+			</div>
+
+			<!-- Audio Element -->
+			<audio id="audio-player"></audio>
+
+			<!-- Progress Bar -->
+			<div class="progress-container">
+				<span class="time" id="current-time">0:00</span>
+				<div class="progress-bar">
+					<div class="progress" id="progress"></div>
+					<input type="range" id="progress-range" min="0" max="100" value="0">
+				</div>
+				<span class="time" id="duration-time">0:00</span>
+			</div>
+
+			<!-- Controls -->
+			<div class="player-controls">
+				<button class="control-btn" id="prev-btn" title="Previous">
+					<i class="icon-arrow-left22"></i>
+				</button>
+				<button class="control-btn play-btn" id="play-btn" title="Play/Pause">
+					<i class="icon-play3"></i>
+				</button>
+				<button class="control-btn" id="next-btn" title="Next">
+					<i class="icon-arrow-right22"></i>
+				</button>
+				<button class="control-btn" id="toggle-playlist-btn" title="Playlist">
+					<i class="icon-list2"></i>
+				</button>
+				<div class="volume-control">
+					<i class="icon-volume-high"></i>
+					<input type="range" id="volume-range" min="0" max="100" value="70">
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Playlist -->
+		<div class="playlist-container" id="playlist-container">
+			<h3 class="playlist-title">Piano Playlist</h3>
+			<ul class="playlist" id="playlist"></ul>
+		</div>
+
+		<!-- Always Visible Toggle Button -->
+		<button class="player-toggle" id="player-toggle" title="Minimize/Expand">
+			<i class="icon-chevron-down"></i>
+		</button>
+	</div>
+
+	<!-- Music Player Script (Optional - Comment out to disable) -->
+	<script src="js/music-player.js"></script>
+	
+	<!-- Main Script -->
 	<script src="js/main.js"></script>
 
 </body>
