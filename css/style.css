@@ -347,8 +347,11 @@ figure {
   position: fixed;
   z-index: 1;
   background-color: #ffb351;
-  transform: translate(-50%,-50%);
+  /* remove static translate so GSAP can control centering with xPercent/yPercent */
+  transform: translate3d(0,0,0);
+  pointer-events: none;
   border-radius: 50%;
+  transform: translate(-50%,-50%);
 }
 
 ::-webkit-scrollbar {
@@ -832,13 +835,18 @@ figure {
   float: left;
   height: 5px;
   box-shadow: none;
+  background-color: #f5f5f5;
+  border-radius: 2px;
+  clear: both;
 }
 
 .progress-bar {
   background-color: #2F3C4F;
   height: 5px;
-  display: block;
+  display: inline-block;
   box-shadow: none;
+  border-radius: 2px;
+  transition: width 0.3s ease;
 }
 
 .progress-bar.progress-bar-1 {
