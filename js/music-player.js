@@ -4,48 +4,48 @@
 
 // ---------------- PLAYLIST ----------------
 const playlist = [
-  {
-    id: 1,
-    title: "Closer",
-    artist: "Rohan Sharma",
-    src: "https://github.com/irohan4792/portfolio-website/releases/download/audio-files/closer.wav"
-  },
-  {
-    id: 2,
-    title: "Golden Hour",
-    artist: "Rohan Sharma",
-    src: "https://github.com/irohan4792/portfolio-website/releases/download/audio-files/golden_hour.wav"
-  },
-  {
-    id: 3,
-    title: "Kaise hua",
-    artist: "Rohan Sharma",
-    src: "https://github.com/irohan4792/portfolio-website/releases/download/audio-files/kaise_hua.wav"
-  },
-  {
-    id: 4,
-    title: "Kho Gaye",
-    artist: "Rohan Sharma",
-    src: "https://github.com/irohan4792/portfolio-website/releases/download/audio-files/kho_gaye.wav"
-  },
-  {
-    id: 5,
-    title: "Ranjha",
-    artist: "Rohan Sharma",
-    src: "https://github.com/irohan4792/portfolio-website/releases/download/audio-files/ranjha.wav"
-  },
-  {
-    id: 6,
-    title: "Saiyaara",
-    artist: "Rohan Sharma",
-    src: "https://github.com/irohan4792/portfolio-website/releases/download/audio-files/saiyara.wav"
-  },
-  {
-    id: 7,
-    title: "Wildest Dreams",
-    artist: "Rohan Sharma",
-    src: "https://github.com/irohan4792/portfolio-website/releases/download/audio-files/wildest_dreams.wav"
-  }
+	{
+		id: 1,
+		title: "Closer",
+		artist: "Rohan Sharma",
+		src: "https://github.com/irohan4792/portfolio-website/releases/download/audio-files/closer.wav"
+	},
+	{
+		id: 2,
+		title: "Golden Hour",
+		artist: "Rohan Sharma",
+		src: "https://github.com/irohan4792/portfolio-website/releases/download/audio-files/golden_hour.wav"
+	},
+	{
+		id: 3,
+		title: "Kaise hua",
+		artist: "Rohan Sharma",
+		src: "https://github.com/irohan4792/portfolio-website/releases/download/audio-files/kaise_hua.wav"
+	},
+	{
+		id: 4,
+		title: "Kho Gaye",
+		artist: "Rohan Sharma",
+		src: "https://github.com/irohan4792/portfolio-website/releases/download/audio-files/kho_gaye.wav"
+	},
+	{
+		id: 5,
+		title: "Ranjha",
+		artist: "Rohan Sharma",
+		src: "https://github.com/irohan4792/portfolio-website/releases/download/audio-files/ranjha.wav"
+	},
+	{
+		id: 6,
+		title: "Saiyaara",
+		artist: "Rohan Sharma",
+		src: "https://github.com/irohan4792/portfolio-website/releases/download/audio-files/saiyara.wav"
+	},
+	{
+		id: 7,
+		title: "Wildest Dreams",
+		artist: "Rohan Sharma",
+		src: "https://github.com/irohan4792/portfolio-website/releases/download/audio-files/wildest_dreams.wav"
+	}
 ];
 
 
@@ -220,6 +220,15 @@ togglePlaylistBtn.addEventListener('click', e => {
 
 document.addEventListener('click', collapsePlayerFully);
 
+// ---------------- SCROLL BLOCKER ----------------
+const preventScroll = (e) => {
+	// Allow scrolling in playlist, block elsewhere in player
+	if (playlistContainer.contains(e.target)) return;
+	e.preventDefault();
+};
+musicPlayer.addEventListener('wheel', preventScroll, { passive: false });
+musicPlayer.addEventListener('touchmove', preventScroll, { passive: false });
+
 // ---------------- UTILS ----------------
 function formatTime(seconds) {
 	if (!seconds || isNaN(seconds)) return '0:00';
@@ -231,6 +240,6 @@ function formatTime(seconds) {
 // ---------------- INIT ----------------
 document.addEventListener('DOMContentLoaded', () => {
 	initPlayer();
-	musicPlayer.classList.add('collapsed');
+	// musicPlayer.classList.add('collapsed'); // Handled in HTML now
 	playerToggleBtn.classList.add('first-time-animation');
 });

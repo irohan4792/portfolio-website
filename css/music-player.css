@@ -1,173 +1,229 @@
 /* ======================================================
-   MUSIC PLAYER STYLES
+   MUSIC PLAYER STYLES - MODERN GLASSMORPHISM
    ====================================================== */
+
+:root {
+  --player-primary: #FF9000;
+  --player-bg: rgba(30, 30, 30, 0.65);
+  --player-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glass-blur: blur(16px);
+  --text-primary: #ffffff;
+  --text-secondary: #aaaaaa;
+}
 
 .music-player {
   position: fixed;
-  bottom: 0;
+  bottom: 20px;
+  /* Floating slightly above bottom */
   left: 20px;
-  width: 350px;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-  border-radius: 15px 15px 0 0;
-  box-shadow: 0 -5px 30px rgba(255, 144, 0, 0.3);
+  width: 400px;
+  /* Increased from 360px to prevent overflow */
+  background: var(--player-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--player-border);
+  border-radius: 24px;
+  box-shadow: var(--glass-shadow);
   z-index: 999;
   font-family: "Space Mono", Arial, serif;
-  transition: all 0.3s ease;
-  color: #fff;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  color: var(--text-primary);
+  overflow: visible;
+  /* Needed for toggle button */
+  overscroll-behavior: contain;
+  /* Prevent scroll chaining to body */
 }
 
 .player-container {
-  padding: 20px;
-  border-bottom: 1px solid rgba(255, 144, 0, 0.2);
+  padding: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* Song Info */
 .player-info {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   text-align: center;
+  position: relative;
 }
 
 .song-title {
-  font-size: 16px;
-  font-weight: bold;
-  color: #FF9000;
-  margin-bottom: 5px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .song-artist {
-  font-size: 12px;
-  color: #999;
+  font-size: 13px;
+  color: var(--player-primary);
+  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 /* Progress Bar */
 .progress-container {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 15px 0;
+  gap: 12px;
+  margin: 20px 0;
 }
 
 .time {
   font-size: 11px;
-  color: #999;
+  color: var(--text-secondary);
+  font-family: "Space Mono", monospace;
   min-width: 35px;
 }
 
 .progress-container .progress-bar {
   flex: 1;
   position: relative;
-  height: 4px;
-  background: rgba(255, 144, 0, 0.2);
-  border-radius: 2px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
   cursor: pointer;
+  overflow: visible;
 }
 
 .progress-container .progress {
   height: 100%;
-  background: #FF9000;
-  border-radius: 2px;
+  background: var(--player-primary);
+  border-radius: 10px;
   width: 0%;
   transition: width 0.1s linear;
+  box-shadow: 0 0 10px rgba(255, 144, 0, 0.4);
+  position: relative;
+}
+
+/* Integrated scrub head in progress bar */
+.progress-container .progress::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.progress-container:hover .progress::after {
+  opacity: 1;
 }
 
 #progress-range {
   position: absolute;
-  top: -6px;
+  top: -8px;
   left: 0;
   width: 100%;
-  height: 16px;
+  height: 22px;
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
   background: transparent;
+  z-index: 2;
 }
 
 #progress-range::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 12px;
-  height: 12px;
-  background: #FF9000;
-  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  background: transparent;
   cursor: pointer;
-  box-shadow: 0 0 5px rgba(255, 144, 0, 0.5);
-}
-
-#progress-range::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
-  background: #FF9000;
-  border-radius: 50%;
-  cursor: pointer;
-  border: none;
-  box-shadow: 0 0 5px rgba(255, 144, 0, 0.5);
 }
 
 /* Controls */
 .player-controls {
   display: flex;
   align-items: center;
+  align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 16px;
+  margin-top: 10px;
+  flex-wrap: nowrap;
+  /* Prevent wrapping */
 }
 
 .control-btn {
-  width: 38px;
-  height: 38px;
-  border: none;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
-  background: rgba(255, 144, 0, 0.1);
-  color: #FF9000;
+  background: rgba(255, 255, 255, 0.05);
+  /* Subtle glass fill */
+  backdrop-filter: blur(5px);
+  color: var(--text-secondary);
   cursor: pointer;
   font-size: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  /* Keep perfect circle */
 }
 
 .control-btn:hover {
-  background: rgba(255, 144, 0, 0.2);
-  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .control-btn.play-btn {
-  width: 45px;
-  height: 45px;
-  background: #FF9000;
+  width: 56px;
+  height: 56px;
+  background: var(--player-primary);
   color: #fff;
-  font-size: 18px;
+  font-size: 20px;
+  border: none;
+  box-shadow: 0 4px 15px rgba(255, 144, 0, 0.3);
 }
 
 .control-btn.play-btn:hover {
-  background: #ff8000;
-  box-shadow: 0 0 15px rgba(255, 144, 0, 0.5);
+  background: #ffaa33;
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(255, 144, 0, 0.5);
 }
 
+/* Volume Control */
 .volume-control {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin-left: auto;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 6px 12px;
+  border-radius: 20px;
 }
 
 .volume-control i {
   font-size: 14px;
-  color: #FF9000;
+  color: var(--text-secondary);
 }
 
 #volume-range {
-  width: 80px;
+  width: 70px;
   height: 4px;
   -webkit-appearance: none;
   appearance: none;
-  background: rgba(255, 144, 0, 0.2);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 2px;
   cursor: pointer;
   outline: none;
@@ -178,99 +234,180 @@
   appearance: none;
   width: 10px;
   height: 10px;
-  background: #FF9000;
+  background: #fff;
   border-radius: 50%;
   cursor: pointer;
+  transition: transform 0.2s;
 }
 
-#volume-range::-moz-range-thumb {
-  width: 10px;
-  height: 10px;
-  background: #FF9000;
-  border-radius: 50%;
-  cursor: pointer;
-  border: none;
+#volume-range::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
 }
 
-/* Player Toggle */
+/* Player Toggle Button */
 .player-toggle {
   position: absolute;
-  top: -35px;
-  left: 20px;
-  width: 35px;
-  height: 35px;
-  border: none;
-  background: linear-gradient(135deg, #FF9000, #ff8000);
+  top: -32px;
+  /* Sits perfectly on top (height is 32px) */
+  left: 40px;
+  /* Restored left position */
+  transform: none;
+
+  width: 60px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: none;
+  background: var(--player-primary);
+  /* Yellow visibility always */
   color: #fff;
-  border-radius: 8px 8px 0 0;
+  border-radius: 16px 16px 0 0;
   cursor: pointer;
   font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1000;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Glass shine effect */
+.player-toggle::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 60%);
+  opacity: 0.5;
+  transition: opacity 0.3s;
 }
 
 .player-toggle:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 -5px 15px rgba(255, 144, 0, 0.4);
+  height: 34px;
+  /* Subtle 2px growth */
+  top: -34px;
+  /* Move up 2px */
+  color: #fff;
+  background: var(--player-primary);
+  box-shadow: 0 -6px 20px rgba(255, 144, 0, 0.3);
 }
 
-.player-toggle i {
-  transition: transform 0.3s ease;
+.player-toggle:hover::after {
+  opacity: 0.2;
 }
 
-/* Pulse animation for collapsed state - first time only */
-@keyframes pulse-bounce {
-  0%, 100% {
-    transform: translateY(0);
-    box-shadow: 0 -5px 15px rgba(255, 144, 0, 0.4);
-  }
-  50% {
-    transform: translateY(-5px);
-    box-shadow: 0 -8px 20px rgba(255, 144, 0, 0.6);
-  }
+/* Collapsed State */
+.music-player.collapsed {
+  transform: translateY(100%);
+  bottom: 0;
+  /* Align to bottom edge */
 }
 
-@keyframes button-glow {
-  0%, 100% {
-    box-shadow: 0 0 10px rgba(255, 144, 0, 0.4), 0 -5px 15px rgba(255, 144, 0, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(255, 144, 0, 0.8), 0 -5px 25px rgba(255, 144, 0, 0.6);
-  }
-}
-
-.music-player.collapsed .player-toggle.first-time-animation {
-  animation: pulse-bounce 2s ease-in-out infinite, button-glow 2s ease-in-out infinite;
+/* When collapsed, we want the toggle visible */
+.music-player.collapsed .player-toggle {
+  top: -32px;
+  height: 32px;
+  width: 60px;
+  border-radius: 16px 16px 0 0;
+  /* Consistent shape */
+  background: var(--player-primary);
+  color: #fff;
+  border: none;
+  box-shadow: 0 -4px 20px rgba(255, 144, 0, 0.5);
 }
 
 .music-player.collapsed .player-toggle i {
   transform: rotate(180deg);
+  font-size: 18px;
 }
 
 .music-player.collapsed .player-container,
 .music-player.collapsed .playlist-container {
-  display: none;
+  /* Hide contents smoothly */
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.2s;
+}
+
+/* Animations */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.33);
+    opacity: 0.5;
+  }
+
+  80%,
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-dot {
+  0% {
+    transform: scale(0.8);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0.8);
+  }
+}
+
+.music-player.collapsed .player-toggle.first-time-animation::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: 100%;
+  margin-left: -50%;
+  margin-top: -50%;
+  border-radius: 50%;
+  border: 2px solid var(--player-primary);
+  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
 }
 
 /* Playlist */
 .playlist-container {
-  max-height: 300px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background: rgba(0, 0, 0, 0.2);
+  margin: 0 10px 10px 10px;
+  border-radius: 16px;
+}
+
+/* When active via JS setting display:block, we usually toggle max-height for animation, 
+   but the JS uses display. Let's rely on standard display toggling but style the container nicel.y */
+
+.playlist-container[style*="display: block"] {
+  max-height: 250px;
+  opacity: 1;
+  padding: 10px;
+  margin-top: 10px;
   overflow-y: auto;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 15px;
-  transition: all 0.3s ease;
+  overscroll-behavior: contain;
+  /* Prevent scroll chaining to parent */
 }
 
 .playlist-title {
-  font-size: 14px;
-  font-weight: bold;
-  color: #FF9000;
-  margin: 0 0 10px 0;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 144, 0, 0.2);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin: 5px 0 10px 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 5px;
 }
 
 .playlist {
@@ -280,112 +417,92 @@
 }
 
 .playlist-item {
-  padding: 10px;
-  margin: 5px 0;
-  background: rgba(255, 144, 0, 0.05);
-  border-left: 3px solid transparent;
-  border-radius: 4px;
+  padding: 10px 14px;
+  margin: 4px 0;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 12px;
-  color: #ddd;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
   transition: all 0.2s ease;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
 }
 
 .playlist-item:hover {
-  background: rgba(255, 144, 0, 0.15);
-  border-left-color: #FF9000;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding-left: 18px;
+  /* Slide effect */
 }
 
 .playlist-item.active {
-  background: rgba(255, 144, 0, 0.25);
-  border-left-color: #FF9000;
-  color: #FF9000;
-  font-weight: bold;
+  background: rgba(255, 144, 0, 0.2);
+  color: var(--player-primary);
+  font-weight: 600;
+}
+
+.playlist-item.active::before {
+  content: '♪';
+  margin-right: 8px;
 }
 
 /* Scrollbar Styling */
 .playlist-container::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 .playlist-container::-webkit-scrollbar-track {
-  background: rgba(255, 144, 0, 0.1);
-  border-radius: 3px;
+  background: transparent;
 }
 
 .playlist-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 144, 0, 0.5);
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
 }
 
 .playlist-container::-webkit-scrollbar-thumb:hover {
-  background: #FF9000;
+  background: var(--player-primary);
 }
 
 /* Mobile Responsive */
 @media screen and (max-width: 768px) {
   .music-player {
-    width: calc(100% - 40px);
-    left: 20px;
+    width: calc(100% - 32px);
+    left: 16px;
+    bottom: 16px;
+    border-radius: 20px;
+  }
+
+  .music-player.collapsed {
+    bottom: 0;
+    transform: translateY(100%);
+  }
+
+  .music-player.collapsed .player-toggle {
+    top: -45px;
+    /* Ensure visible on mobile */
   }
 
   .player-controls {
-    gap: 8px;
+    gap: 12px;
   }
 
   .control-btn {
-    width: 32px;
-    height: 32px;
-    font-size: 14px;
+    width: 36px;
+    height: 36px;
   }
 
   .control-btn.play-btn {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
   }
 
   .volume-control {
     display: none;
+    /* Hide volume on mobile to save space */
   }
 
-  #volume-range {
-    display: none;
-  }
-
-  .playlist-container {
-    max-height: 200px;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .music-player {
-    width: calc(100% - 20px);
-    left: 10px;
-  }
-
-  .player-controls {
-    gap: 5px;
-  }
-
-  .control-btn {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
-  }
-
-  .control-btn.play-btn {
-    width: 35px;
-    height: 35px;
-  }
-
-  .song-title {
-    font-size: 14px;
-  }
-
-  .song-artist {
-    font-size: 11px;
+  .playlist-container[style*="display: block"] {
+    max-height: 180px;
   }
 }
